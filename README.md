@@ -57,6 +57,8 @@ Players must sort colored nuts onto bolts following these rules:
 
 - [Complete Setup Guide](Assets/Documentation/SETUP_GUIDE.md) - Detailed setup instructions
 - [README (Ukrainian)](Assets/Documentation/README.md) - Українська документація
+- [Bug Fixes](Assets/Documentation/BUG_FIXES.md) - Recent bug fixes and solutions
+- [Visual Fix Explanation](Assets/Documentation/VISUAL_FIX_EXPLANATION.md) - Visual guide to recent fixes
 
 ## Project Structure
 
