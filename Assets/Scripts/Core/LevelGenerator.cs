@@ -32,9 +32,13 @@ public class LevelGenerator : MonoBehaviour
     
     private void CreateBolts(int count)
     {
+        // Calculate centered start position based on number of bolts
+        float totalWidth = (count - 1) * boltSpacing;
+        Vector3 centeredStart = new Vector3(-totalWidth / 2f, startPosition.y, startPosition.z);
+        
         for (int i = 0; i < count; i++)
         {
-            Vector3 position = startPosition + Vector3.right * (i * boltSpacing);
+            Vector3 position = centeredStart + Vector3.right * (i * boltSpacing);
             GameObject boltObj = Instantiate(boltPrefab, position, Quaternion.identity, transform);
             boltObj.name = $"Bolt_{i}";
             
