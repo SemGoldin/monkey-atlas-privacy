@@ -121,6 +121,12 @@ public class BoltSelector : MonoBehaviour
         {
             // Invalid move - show feedback
             targetBolt.HighlightAsInvalid();
+            
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayInvalidMoveSound();
+            }
+            
             Debug.Log($"Cannot place {selectedNut.Color} nut on bolt - invalid move");
             
             // Reset highlight after a moment
@@ -139,6 +145,11 @@ public class BoltSelector : MonoBehaviour
     {
         currentState = SelectionState.Moving;
         ResetAllHighlights();
+        
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayValidMoveSound();
+        }
         
         Vector3 targetPosition = targetBolt.GetNextNutPosition();
         

@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     
     private List<Bolt> bolts = new List<Bolt>();
     private BoltSelector boltSelector;
+    private UIController uiController;
     private int moveCount = 0;
     
     public static GameManager Instance { get; private set; }
@@ -41,6 +42,8 @@ public class GameManager : MonoBehaviour
         {
             boltSelector = gameObject.AddComponent<BoltSelector>();
         }
+        
+        uiController = FindObjectOfType<UIController>();
     }
 
     private void Start()
@@ -215,6 +218,12 @@ public class GameManager : MonoBehaviour
     public void RecordMove()
     {
         moveCount++;
+        
+        if (uiController != null)
+        {
+            uiController.UpdateMoveCount(moveCount);
+        }
+        
         CheckWinCondition();
     }
 
@@ -246,6 +255,17 @@ public class GameManager : MonoBehaviour
     private void OnLevelComplete()
     {
         Debug.Log($"Level Complete! Moves: {moveCount}");
+        
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayWinSound();
+        }
+        
+        if (uiController != null)
+        {
+            uiController.ShowWinPanel(moveCount);
+        }
+        
         // Add UI feedback, next level logic, etc.
     }
 

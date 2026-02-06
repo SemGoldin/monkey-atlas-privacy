@@ -68,6 +68,12 @@ public class Nut : MonoBehaviour
 
         currentAnimation = DOTween.Sequence();
         
+        // Play unscrew sound
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayUnscrewSound();
+        }
+        
         // Rotate as if unscrewing (counter-clockwise when viewed from top)
         currentAnimation.Append(transform.DORotate(new Vector3(0, 360, 0), 0.3f, RotateMode.LocalAxisAdd).SetEase(Ease.OutQuad));
         
@@ -133,6 +139,14 @@ public class Nut : MonoBehaviour
         
         // Align rotation
         screwSequence.Append(transform.DORotate(Vector3.zero, 0.2f).SetEase(Ease.OutQuad));
+        
+        // Play screw sound when starting to go down
+        screwSequence.AppendCallback(() => {
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayScrewSound();
+            }
+        });
         
         // Move down while rotating (screwing motion)
         screwSequence.Append(transform.DOMoveY(finalPosition.y, 0.4f).SetEase(Ease.InQuad));
