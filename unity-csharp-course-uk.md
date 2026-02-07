@@ -145,7 +145,7 @@ transform.Translate(dir * moveSpeed * Time.deltaTime, Space.World);
 ```csharp
 transform.position = new Vector3(0, 1, 0);
 transform.localScale *= 1.1f;
-transform.Rotate(Vector3.up * 90f); // одноразовий поворот 90° у події (кнопка/клік)
+transform.Rotate(Vector3.up * 90f); // одноразовий поворот 90° (всередині методу-обробника події)
 // приклад методу, який викликає кнопка UI:
 // public void OnRotateButton() { transform.Rotate(Vector3.up * 90f); }
 ```
@@ -238,7 +238,7 @@ public class PlayerCollector : MonoBehaviour
     }
 }
 ```
-**Пояснення:** `TryGetComponent` повертає `true`, якщо компонент знайдено, і одразу записує його в параметр `out`, тож окрема перевірка на `null` не потрібна.  
+**Пояснення:** `TryGetComponent` повертає `true`, якщо компонент знайдено, і одразу записує його в параметр `out`, тож окрема перевірка на `null` не потрібна. Працює з Unity 2019.2+; у старіших версіях використовуйте `GetComponent` із перевіркою на `null`.  
 **Практика:** Розставити 10 монет, перевірити підрахунок очок.  
 **Типові помилки:** Відсутній `isTrigger`; не додали колайдер гравцю.
 
@@ -263,7 +263,7 @@ public class Enemy
 
     public void TakeDamage(int amount)
     {
-        if (amount < 0) return; // ігноруємо від’ємні значення; для лікування використовуйте Heal нижче
+        if (amount < 0) return; // ігноруємо від’ємні значення; для лікування використовуйте метод Heal нижче
         Health = Mathf.Max(0, Health - amount);
     }
 
