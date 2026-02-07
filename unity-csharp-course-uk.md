@@ -147,7 +147,7 @@ transform.position = new Vector3(0, 1, 0);
 transform.localScale *= 1.1f;
 transform.Rotate(Vector3.up * 90f); // одноразовий поворот 90° у події (кнопка/клік)
 // для безперервного обертання в Update додайте Time.deltaTime:
-// transform.Rotate(Vector3.up * 90f * Time.deltaTime);
+// transform.Rotate(Vector3.up * 45f * Time.deltaTime); // приклад 45°/с, налаштуйте за потреби
 // приклад у методі, який викликає кнопка UI:
 // public void OnRotateButton() { transform.Rotate(Vector3.up * 90f); }
 ```
@@ -261,9 +261,15 @@ public class Enemy
         if (amount < 0) return; // ігноруємо від’ємні значення; лікування робіть окремим Heal
         Health = Mathf.Max(0, Health - amount);
     }
+
+    public void Heal(int amount)
+    {
+        if (amount <= 0) return;
+        Health += amount; // за потреби обмежте максимумом
+    }
 }
 ```
-**Пояснення:** Властивості з приватним сеттером для інкапсуляції; метод приймає лише додатне пошкодження, а відновлення робиться окремим `Heal(int amount)`.  
+**Пояснення:** Властивості з приватним сеттером для інкапсуляції; метод приймає лише додатне пошкодження, відновлення робиться окремим `Heal(int amount)`.  
 **Практика:** Створити список ворогів, завдати шкоди першому.  
 **Типові помилки:** Використання публічних полів замість властивостей без потреби.
 
@@ -327,6 +333,7 @@ public class ScoreEvents : MonoBehaviour
 ```csharp
 void OnEnable()  => ScoreEvents.OnScoreChanged += HandleScoreChanged;
 void OnDisable() => ScoreEvents.OnScoreChanged -= HandleScoreChanged;
+void HandleScoreChanged(int value) { /* оновити UI або логіку */ }
 ```
 **Практика:** Створити UI-текст, що оновлюється на подію.  
 **Типові помилки:** Не відписалися → пам’ять/подвійні виклики; використання подій для дуже частих апдейтів (перевантаження).
