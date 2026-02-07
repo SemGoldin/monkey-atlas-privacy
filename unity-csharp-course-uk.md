@@ -148,6 +148,8 @@ transform.localScale *= 1.1f;
 transform.Rotate(Vector3.up * 90f); // одноразовий поворот 90° у події (кнопка/клік)
 // для безперервного обертання в Update додайте Time.deltaTime:
 // transform.Rotate(Vector3.up * 90f * Time.deltaTime);
+// приклад у методі, який викликає кнопка UI:
+// public void OnRotateButton() { transform.Rotate(Vector3.up * 90f); }
 ```
 **Пояснення:** `Rotate` додає обертання при кожному виклику; для одноразового повороту викликаємо метод у події. Якщо потрібно плавне обертання, перенесіть виклик у `Update` і помножте на `Time.deltaTime`.  
 **Практика:** Створити платформу, збільшувати її масштаб при натисканні клавіші; додати `Mathf.Clamp` для обмеження масштабу (наприклад 0.5f–3f); одноразово обертати на 90° після натискання окремої клавіші.  
@@ -256,12 +258,12 @@ public class Enemy
 
     public void TakeDamage(int amount)
     {
-        if (amount < 0) return; // ігноруємо від’ємні значення, щоб не лікувати
+        if (amount < 0) return; // ігноруємо від’ємні значення; лікування робіть окремим Heal
         Health = Mathf.Max(0, Health - amount);
     }
 }
 ```
-**Пояснення:** Властивості з приватним сеттером для інкапсуляції.  
+**Пояснення:** Властивості з приватним сеттером для інкапсуляції; метод приймає лише додатне пошкодження, а відновлення робиться окремим `Heal(int amount)`.  
 **Практика:** Створити список ворогів, завдати шкоди першому.  
 **Типові помилки:** Використання публічних полів замість властивостей без потреби.
 
@@ -369,6 +371,7 @@ public class GameManager : MonoBehaviour
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
@@ -387,7 +390,10 @@ public class UIController : MonoBehaviour
         scoreText.text = $"Очки: {score}";
     }
 
-    void Restart() { /* перезавантаження сцени */ }
+    void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }
 ```
 **Практика:** Створити UI-лічильник очок і кнопку Restart, прив’язати методи.  
