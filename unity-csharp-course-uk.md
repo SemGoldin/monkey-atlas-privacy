@@ -263,7 +263,7 @@ public class Enemy
 
     public void TakeDamage(int amount)
     {
-        if (amount < 0) return; // ігноруємо від’ємні значення; для лікування використовуйте окремий метод Heal
+        if (amount < 0) return; // ігноруємо від’ємні значення; лікування виконує метод Heal нижче
         Health = Mathf.Max(0, Health - amount);
     }
 
