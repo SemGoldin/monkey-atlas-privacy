@@ -145,7 +145,7 @@ transform.Translate(dir * moveSpeed * Time.deltaTime, Space.World);
 ```csharp
 transform.position = new Vector3(0, 1, 0);
 transform.localScale *= 1.1f;
-transform.Rotate(Vector3.up * 90f); // одноразовий поворот 90° (всередині методу-обробника події)
+transform.Rotate(Vector3.up * 90f); // одноразовий поворот 90°
 // приклад методу, який викликає кнопка UI:
 // public void OnRotateButton() { transform.Rotate(Vector3.up * 90f); }
 ```
@@ -263,7 +263,7 @@ public class Enemy
 
     public void TakeDamage(int amount)
     {
-        if (amount < 0) return; // ігноруємо від’ємні значення; для лікування використовуйте метод Heal нижче
+        if (amount < 0) return; // ігноруємо від’ємні значення; для лікування використовуйте окремий метод Heal
         Health = Mathf.Max(0, Health - amount);
     }
 
@@ -341,7 +341,7 @@ public class ScoreListener : MonoBehaviour
 {
     void OnEnable()  => ScoreEvents.OnScoreChanged += HandleScoreChanged;
     void OnDisable() => ScoreEvents.OnScoreChanged -= HandleScoreChanged;
-    void HandleScoreChanged(int value) { /* оновити UI або логіку */ }
+    void HandleScoreChanged(int value) { Debug.Log($"Нові очки: {value}"); }
 }
 ```
 **Практика:** Створити UI-текст, що оновлюється на подію.  
