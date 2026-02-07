@@ -146,10 +146,15 @@ transform.Translate(dir * moveSpeed * Time.deltaTime, Space.World);
 transform.position = new Vector3(0, 1, 0);
 transform.localScale *= 1.1f;
 transform.Rotate(Vector3.up * 90f); // одноразовий поворот 90° у події (кнопка/клік)
-// для безперервного обертання в Update додайте Time.deltaTime:
-// transform.Rotate(Vector3.up * 45f * Time.deltaTime); // приклад 45°/с, налаштуйте за потреби
-// приклад у методі, який викликає кнопка UI:
+// приклад методу, який викликає кнопка UI:
 // public void OnRotateButton() { transform.Rotate(Vector3.up * 90f); }
+```
+**Приклад безперервного обертання в Update:**  
+```csharp
+void Update()
+{
+    transform.Rotate(Vector3.up * 45f * Time.deltaTime); // 45°/с
+}
 ```
 **Пояснення:** `Rotate` додає обертання при кожному виклику; для одноразового повороту викликаємо метод у події. Якщо потрібно плавне обертання, перенесіть виклик у `Update` і помножте на `Time.deltaTime`.  
 **Практика:** Створити платформу, збільшувати її масштаб при натисканні клавіші; додати `Mathf.Clamp` для обмеження масштабу (наприклад 0.5f–3f); одноразово обертати на 90° після натискання окремої клавіші.  
@@ -258,7 +263,7 @@ public class Enemy
 
     public void TakeDamage(int amount)
     {
-        if (amount < 0) return; // ігноруємо від’ємні значення; лікування робіть окремим Heal
+        if (amount < 0) return; // ігноруємо від’ємні значення; для лікування використовуйте Heal нижче
         Health = Mathf.Max(0, Health - amount);
     }
 
@@ -329,11 +334,15 @@ public class ScoreEvents : MonoBehaviour
     }
 }
 ```
-**Пояснення:** `?.Invoke` — null-safe виклик події, що захищає від `NullReferenceException`, коли немає підписників. Підписники мають відписуватися в `OnDisable`:  
+**Пояснення:** `?.Invoke` — null-safe виклик події, що захищає від `NullReferenceException`, коли немає підписників.  
+**Код-приклад (підписник):**
 ```csharp
-void OnEnable()  => ScoreEvents.OnScoreChanged += HandleScoreChanged;
-void OnDisable() => ScoreEvents.OnScoreChanged -= HandleScoreChanged;
-void HandleScoreChanged(int value) { /* оновити UI або логіку */ }
+public class ScoreListener : MonoBehaviour
+{
+    void OnEnable()  => ScoreEvents.OnScoreChanged += HandleScoreChanged;
+    void OnDisable() => ScoreEvents.OnScoreChanged -= HandleScoreChanged;
+    void HandleScoreChanged(int value) { /* оновити UI або логіку */ }
+}
 ```
 **Практика:** Створити UI-текст, що оновлюється на подію.  
 **Типові помилки:** Не відписалися → пам’ять/подвійні виклики; використання подій для дуже частих апдейтів (перевантаження).
