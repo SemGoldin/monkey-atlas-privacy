@@ -147,8 +147,8 @@ transform.position = new Vector3(0, 1, 0);
 transform.localScale *= 1.1f;
 transform.Rotate(Vector3.up * 90f);
 ```
-**Практика:** Створити платформу, збільшувати її масштаб при натисканні клавіші.  
-**Типові помилки:** Плутанина `position` vs `localPosition`; множення масштабу без обмежень → нульовий scale.
+**Практика:** Створити платформу, збільшувати її масштаб при натисканні клавіші; додати `Mathf.Clamp` для обмеження масштабу (наприклад 0.5f–3f).  
+**Типові помилки:** Плутанина `position` vs `localPosition`; множення масштабу без обмежень → нульовий або надто великий scale.
 
 ### Урок 10. Collider і Rigidbody. Зіткнення та тригери
 **Теорія:** Collider визначає форму; Rigidbody додає фізику. `isTrigger` для подій без фізичного відштовхування.  
@@ -190,7 +190,7 @@ public class SimpleMover : MonoBehaviour
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
-        Vector3 move = new Vector3(h, 0f, v);
+        Vector3 move = new Vector3(h, 0f, v).normalized;
         controller.SimpleMove(move * speed);
     }
 }
@@ -225,6 +225,7 @@ public class PlayerCollector : MonoBehaviour
     }
 }
 ```
+**Пояснення:** `TryGetComponent` одночасно шукає компонент і перевіряє, що він не `null`, без зайвих викликів `GetComponent`.  
 **Практика:** Розставити 10 монет, перевірити підрахунок очок.  
 **Типові помилки:** Відсутній `isTrigger`; не додали колайдер гравцю.
 
@@ -313,7 +314,7 @@ public class ScoreEvents : MonoBehaviour
     }
 }
 ```
-**Пояснення:** `?.Invoke` безпечний виклик. Підписники відписуються в `OnDisable`.  
+**Пояснення:** `?.Invoke` — null-safe виклик події, що захищає від `NullReferenceException`, коли немає підписників. Підписники відписуються в `OnDisable`.  
 **Практика:** Створити UI-текст, що оновлюється на подію.  
 **Типові помилки:** Не відписалися → пам’ять/подвійні виклики; використання подій для дуже частих апдейтів (перевантаження).
 
