@@ -145,8 +145,8 @@ transform.Translate(dir * moveSpeed * Time.deltaTime, Space.World);
 ```csharp
 transform.position = new Vector3(0, 1, 0);
 transform.localScale *= 1.1f;
-transform.Rotate(Vector3.up * 90f * Time.deltaTime); // плавне обертання в циклі
-// одноразово під час події:
+transform.Rotate(Vector3.up * 90f * Time.deltaTime); // безперервне обертання 90°/с у циклі
+// одноразово під час події (кнопка/клік):
 // transform.Rotate(Vector3.up * 90f);
 ```
 **Пояснення:** `Rotate` додає обертання при кожному виклику, тож у постійному циклі множимо на `Time.deltaTime`; для одноразового повороту викликаємо метод лише під час події (кнопка/клавіша).  
@@ -187,7 +187,10 @@ public class SimpleMover : MonoBehaviour
     public float speed = 5f;
     private CharacterController controller;
 
-    void Awake() => controller = GetComponent<CharacterController>();
+    void Awake()
+    {
+        controller = GetComponent<CharacterController>();
+    }
 
     void Update()
     {
@@ -253,6 +256,7 @@ public class Enemy
 
     public void TakeDamage(int amount)
     {
+        if (amount < 0) return; // негативні значення не збільшують HP
         Health = Mathf.Max(0, Health - amount);
     }
 }
