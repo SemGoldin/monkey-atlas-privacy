@@ -6,3 +6,4 @@ This repository only contains the privacy policy for the Monkey Atlas applicatio
 - `privacy-policy`: text file with the current privacy policy.
 
 If you are looking for the game code or project files, they are not stored here.
+There is no other source code in this repository.
