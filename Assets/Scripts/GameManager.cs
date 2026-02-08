@@ -81,21 +81,9 @@ namespace BoltNutPuzzle
         {
             bolts.Clear();
             
-            // Arrange bolts in a 3x3 grid
-            int rows = 3;
-            int cols = 3;
-            float spacing = 2f;
-            
             for (int i = 0; i < totalBolts; i++)
             {
-                int row = i / cols;
-                int col = i % cols;
-                
-                Vector3 position = new Vector3(
-                    (col - cols / 2) * spacing,
-                    0f,
-                    (row - rows / 2) * spacing
-                );
+                Vector3 position = GameConstants.GetBoltGridPosition(i);
                 
                 GameObject boltObj = Instantiate(boltPrefab, position, Quaternion.identity);
                 Bolt bolt = boltObj.GetComponent<Bolt>();
@@ -122,7 +110,7 @@ namespace BoltNutPuzzle
             }
             
             // Shuffle the colors
-            ShuffleList(nutColors);
+            GameConstants.Shuffle(nutColors);
             
             // Assign nuts to bolts (leaving last 2 bolts empty)
             int nutIndex = 0;
@@ -151,20 +139,6 @@ namespace BoltNutPuzzle
                     
                     nutIndex++;
                 }
-            }
-        }
-        
-        /// <summary>
-        /// Shuffle a list randomly
-        /// </summary>
-        private void ShuffleList<T>(List<T> list)
-        {
-            for (int i = 0; i < list.Count; i++)
-            {
-                int randomIndex = Random.Range(i, list.Count);
-                T temp = list[i];
-                list[i] = list[randomIndex];
-                list[randomIndex] = temp;
             }
         }
         
@@ -288,7 +262,11 @@ namespace BoltNutPuzzle
             // Add nut to target bolt
             targetBolt.AddNut(liftedNut);
             
-            // Visual effect for contact (could be implemented with particle system)
+            // Visual effect for contact
+            if (EffectsManager.Instance != null)
+            {
+                EffectsManager.Instance.PlayNutContactEffect(targetPosition);
+            }
             
             // Reset selection
             selectedBolt.SetSelected(false);
@@ -356,6 +334,12 @@ namespace BoltNutPuzzle
             if (AudioManager.Instance != null)
             {
                 AudioManager.Instance.PlayVictorySound();
+            }
+            
+            // Play victory effect
+            if (EffectsManager.Instance != null)
+            {
+                EffectsManager.Instance.PlayVictoryEffect(Vector3.zero);
             }
             
             // Show winner panel (to be implemented in UI)

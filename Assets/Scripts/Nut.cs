@@ -48,30 +48,7 @@ namespace BoltNutPuzzle
             if (renderer != null)
             {
                 Material mat = renderer.material;
-                switch (color)
-                {
-                    case NutColor.Red:
-                        mat.color = Color.red;
-                        break;
-                    case NutColor.Blue:
-                        mat.color = Color.blue;
-                        break;
-                    case NutColor.Green:
-                        mat.color = Color.green;
-                        break;
-                    case NutColor.Yellow:
-                        mat.color = Color.yellow;
-                        break;
-                    case NutColor.Purple:
-                        mat.color = new Color(0.5f, 0f, 0.5f);
-                        break;
-                    case NutColor.Orange:
-                        mat.color = new Color(1f, 0.5f, 0f);
-                        break;
-                    case NutColor.Pink:
-                        mat.color = new Color(1f, 0.75f, 0.8f);
-                        break;
-                }
+                mat.color = GameConstants.GetUnityColor(color);
             }
         }
         
